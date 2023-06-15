@@ -1,0 +1,7 @@
+__pycache__
+.vscode
+database
+TCC-env
+.env
+notes.txt
+```

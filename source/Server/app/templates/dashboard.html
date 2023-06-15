@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Websocket System</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"
+      integrity="sha512-iZIBSs+gDyTH0ZhUem9eQ1t4DcEn2B9lHxfRMeGQhyNdSUz+rb+5A3ummX6DQTOIs1XK0gOteOg/LPtSo9VJ+w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='fontawesome-free/css/all.min.css')}}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      media="all"
+      href="{{ url_for('static', filename='style.css')}}"
+    />
+  </head>
+  <body class="overlay-scrollbar">
+    <div class="wrapper">
+      <div class="row">
+        <div class="col-3 col-m-6 col-sm-6">
+          <div id="online_button" class="counter bg-success">
+            <p>
+              <i class="fas fa-tasks"></i>
+            </p>
+            <h3 id="raspon">--</h3>
+            <p><b>Dispositivos Online</b></p>
+          </div>
+        </div>
+
+        <div class="col-3 col-m-6 col-sm-6">
+          <div id="offline_button" class="counter bg-danger">
+            <p>
+              <i class="fas fa-tasks"></i>
+            </p>
+            <h3 id="raspoff">--</h3>
+            <p><b>Dispositivos Offline</b></p>
+          </div>
+        </div>
+
+        <div class="col-3 col-m-6 col-sm-6">
+          <div class="counter bg-warning">
+            <p>
+              <i class="fas fa-globe"></i>
+            </p>
+            <h3><span id="transport"></span></h3>
+            <p><b>Tipo de Conexão</b></p>
+          </div>
+        </div>
+
+        <div class="col-3 col-m-6 col-sm-6">
+          <div class="counter bg-warning">
+            <p>
+              <i class="fas fa-wifi"></i>
+            </p>
+            <h3><span id="ping-pong"></span>ms</h3>
+            <p><b>Latência</b></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-9 col-m-12 col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              <h3>Acesso Remoto</h3>
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <div class="card-content remote_access_terminal">
+              <div class="form_remote">
+                <form id="get_room" action="#" method="POST">
+                  <p>Código Dispositivo:</p>
+                  <div class="line">
+                    <input
+                      type="text"
+                      name="codmm_room"
+                      id="codmm_room"
+                      placeholder="Código"
+                    />
+                    <div class="separator_1"></div>
+                    <input
+                      class="green_button"
+                      type="submit"
+                      value="Conectar"
+                    />
+                  </div>
+                </form>
+                <form id="send_cmd" method="POST">
+                  <p>Comando:</p>
+                  <div class="line two_by_one">
+                    <input
+                      type="text"
+                      name="cmd_text"
+                      id="cmd_text"
+                      rows="2"
+                      placeholder="Comando"
+                    />
+                    <div class="separator_1"></div>
+                    <input
+                      class="grey_button"
+                      type="submit"
+                      id="send_command"
+                      value="Enviar comando →"
+                    /><br />
+                  </div>
+                </form>
+                <form id="clean_this" action="#" method="POST">
+                  <input class="orange_button" type="submit" value="Limpar" />
+                </form>
+                <form
+                  class="ohc_container"
+                  id="open_this"
+                  action="#"
+                  method="POST"
+                >
+                  <div class="on_hover_change">
+                    <label for="1_toogle">
+                      <div class="grey_button confirm_button">Abrir</div>
+                    </label>
+                    <input
+                      class="confirm_toogle"
+                      type="checkbox"
+                      id="1_toogle"
+                    />
+                    <input
+                      class="grey_button animate"
+                      type="submit"
+                      value="Tenho Certeza"
+                    />
+                  </div>
+                </form>
+                <form
+                  class="ohc_container"
+                  id="reboot_this"
+                  action="#"
+                  method="POST"
+                >
+                  <div class="on_hover_change">
+                    <label for="3_toogle">
+                      <div class="grey_button confirm_button">
+                        Reiniciar Sistema
+                      </div>
+                    </label>
+                    <input
+                      class="confirm_toogle"
+                      type="checkbox"
+                      id="3_toogle"
+                    />
+                    <input
+                      class="grey_button animate"
+                      type="submit"
+                      value="Tenho Certeza"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="output_remote_wraper">
+                <textarea
+                  id="commandOUT"
+                  name="commandOUT"
+                  rows="50"
+                  cols="100"
+                  readonly
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Status</h3>
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <div class="card-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>status</th>
+                    <th>Código</th>
+                    <th>Loja</th>
+                    <th>Ping [ms]</th>
+                    <th>Acessos</th>
+                  </tr>
+                </thead>
+                <tbody id="tableinput">
+                  <tr>
+                    <td>--</td>
+                    <td>
+                      <span class="dot"> -- </span>
+                    </td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>
+                      <span class="dot"> -- </span>
+                    </td>
+                    <td>--</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 col-m-12 col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              <h3>Estatísticas</h3>
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <div class="card-content">
+              <div id="percent-online" class="progress-wrapper">
+                <p>
+                  Sistemas Online
+                  <span class="float-right">0%</span>
+                </p>
+                <div class="progress">
+                  <div class="bg-success" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Filtros</h3>
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <div class="card-content">
+              <form id="update" method="POST" action="#">
+                <input type="submit" value="Atualizar" />
+              </form>
+              <div style="height: 15px" class="container"></div>
+
+              <input type="text" id="inputcond" placeholder="Pesquisar" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 300px" class="container"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="{{ url_for('static', filename='socket.js')}}"></script>
+  </body>
+</html>
