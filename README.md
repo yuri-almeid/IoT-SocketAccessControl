@@ -11,12 +11,7 @@ Implementação de tecnologia de sockets para uma conexão confiável e eficaz.
 Segurança melhorada para lojas autônomas.
 
 ## Instalação e Uso
-(Inserir instruções de instalação e uso aqui)
+- FLASK_APP=source/Server/run.py FLASK_DEBUG=1 python3 -m flask run --host=0.0.0.0 --no-debugger --no-reload --port 5001
 
-## Contribuição
-Se você deseja contribuir para este projeto, por favor, siga as diretrizes de contribuição. (Link para as diretrizes de contribuição)
-
-## Licença
-(Inserir informações sobre a licença aqui)
 
 Sinta-se à vontade para clonar, usar e modificar este código para suas próprias aplicações. Se você encontrar qualquer problema ou tiver sugestões de melhorias, sinta-se à vontade para abrir uma issue ou enviar um pull request.
