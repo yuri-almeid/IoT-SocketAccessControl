@@ -1,5 +1,5 @@
 from app import DB, SOCKETIO
-from app.models import Device, Store, User
+from app.models import Device, Status, Store, User
 from flask import Response, jsonify, render_template, request
 from sqlalchemy.exc import IntegrityError
 
@@ -115,9 +115,15 @@ def create_device():
 @main.route("/devices/delete/<int:id>", methods=["DELETE"])
 def delete_device(id):
     device = Device.query.get(id)
-    DB.session.delete(device)
-    DB.session.commit()
-    return jsonify({"message": "success"}), 200
+    status = Status.query.filter_by(device_code=device.code).first()
+    try:
+        DB.session.delete(status)
+        DB.session.delete(device)
+        DB.session.commit()
+        return jsonify({"message": "success"}), 200
+    except IntegrityError:
+        DB.session.rollback()
+        return jsonify({"message": "Fail to delete"}), 409
 
 
 @main.route("/open", methods=["POST"])
