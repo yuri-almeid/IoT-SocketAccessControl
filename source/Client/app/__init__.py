@@ -13,8 +13,8 @@ CWD = os.getcwd()
 METADATA_WAIT_TIME = 300  # 5 minutes
 
 if IS_EMBEDDED:
-    CONFIG_FILE = "/home/pi/device_config.json"
-    HOME_DIR = "/home/pi"
+    CONFIG_FILE = "/home/yuri/device_config.json"
+    HOME_DIR = "/home/yuri"
 else:
     CONFIG_FILE = f"{CWD}/source/Client/device_config.json"
     HOME_DIR = CWD
