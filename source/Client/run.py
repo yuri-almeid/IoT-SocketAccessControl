@@ -11,6 +11,11 @@ def socket_thread():
     config = main.methods.load_from_device_config()
     count = 0
     timestep = 5
+    print(
+        "[Socket thread] : Tentando conectar ao servidor em: "
+        + config["server_url"]
+        + "..."
+    )
     while True:
         try:
             SOCKET_CLIENT.connect(
@@ -29,7 +34,6 @@ def socket_thread():
 
 
 if __name__ == "__main__":
-
     socket_thread = threading.Thread(target=socket_thread)
     socket_thread.start()
 
