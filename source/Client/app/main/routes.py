@@ -1,7 +1,7 @@
 from app import IS_EMBEDDED
 from flask import Response
 
-from . import main
+from . import gpio_actions, main
 
 
 @main.route("/status")
@@ -16,7 +16,7 @@ def status():
 @main.route("/open")
 def open():
     if IS_EMBEDDED:
-        main.gpio_actions.open_door()
+        gpio_actions.open_door()
     else:
         print("[Flask thread] : Door opened in debug mode")
 
