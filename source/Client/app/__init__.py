@@ -5,7 +5,7 @@ from flask_cors.extension import CORS
 from socketio import Client
 
 LIST_RPI = []
-IS_EMBEDDED = os.path.isdir("/home/pi")
+IS_EMBEDDED = os.path.isdir("/home/yuri")
 SOCKET_CLIENT = Client(reconnection=True)
 APP_CORS = CORS()
 PIN_RELAY = 16
