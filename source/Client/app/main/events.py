@@ -1,3 +1,5 @@
+import threading
+
 from app import SOCKET_CLIENT, main
 from app.main import methods
 
@@ -28,8 +30,8 @@ def connect():
 
     SOCKET_CLIENT.emit("join", {"room": config["code"]})
 
-    # iAmIlive = threading.Thread(target=func.i_am_alive)
-    # iAmIlive.start()
+    metadata_thread = threading.Thread(target=methods.device_metadata)
+    metadata_thread.start()
 
 
 @SOCKET_CLIENT.event

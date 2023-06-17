@@ -34,6 +34,11 @@ def on_list_update(data):
 
 
 @SOCKETIO.event
+def rasp_metadata(message):
+    methods.log_device_metadata(message)
+
+
+@SOCKETIO.event
 def send_cmd(message):
     emit("command_event", {"data": message["data"]}, to=message["room"])
 

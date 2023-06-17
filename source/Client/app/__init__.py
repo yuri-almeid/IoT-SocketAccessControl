@@ -10,6 +10,7 @@ SOCKET_CLIENT = Client(reconnection=True)
 APP_CORS = CORS()
 PIN_RELAY = 16
 CWD = os.getcwd()
+METADATA_WAIT_TIME = 5  # 5 minutes
 
 if IS_EMBEDDED:
     CONFIG_FILE = "/home/pi/device_config.json"

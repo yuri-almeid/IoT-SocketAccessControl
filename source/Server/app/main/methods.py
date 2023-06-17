@@ -1,5 +1,5 @@
 from app import DB as db
-from app.models import Access, Device, Status, Store
+from app.models import Access, Device, Logs, Status, Store
 from flask import session
 from flask_socketio import close_room, emit
 
@@ -76,7 +76,6 @@ def create_device(data):
 
 
 def update_dashboard():
-
     global LIST_RPI
     devices = Device.query.all()
 
@@ -107,8 +106,23 @@ def update_dashboard():
     )
 
 
-def log_device_metadata():
-    pass
+def log_device_metadata(metadata):
+    try:
+        device = Device.query.filter_by(code=metadata["code"]).first()
+        new_log = Logs(
+            device_id=device.id,
+            down_speed=metadata["download"],
+            up_speed=metadata["upload"],
+            cpu_usage=metadata["cpu"],
+            ram_usage=metadata["ram"],
+            disk_usage=metadata["disk"],
+            uptime=metadata["uptime"],
+            cpu_temperature=metadata["temperature"],
+        )
+        db.session.add(new_log)
+        db.session.commit()
+    except Exception as e:
+        print("Erro ao salvar log de metadados: " + str(e))
 
 
 def log_user_access(user_id, store_id, success):
