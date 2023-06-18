@@ -23,9 +23,13 @@ def device_metadata():
     while True:
         config = load_from_device_config()
 
-        st = speedtest.Speedtest()
-        download_rate = round(st.download() / (1024**2), 5)
-        upload_rate = round(st.upload() / (1024**2), 5)
+        try:
+            st = speedtest.Speedtest()
+            download_rate = round(st.download() / (1024**2), 5)
+            upload_rate = round(st.upload() / (1024**2), 5)
+        except Exception:
+            download_rate = 0
+            upload_rate = 0
         uptime = time.time() - psutil.boot_time()
 
         if IS_EMBEDDED:
